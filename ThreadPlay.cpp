@@ -8,32 +8,28 @@
 
 using namespace std;
 
-class Writer
+class Printer
 {
 public:
-  void init(){
-    varA = 1234;
-  }
-protected:
-  int varA = 0;
-};
+  string name;
+  
+  Printer(string name) : name(name) {}
+  
+  void operator()()
+  {
+    for (int i=0;i<100000;i++)
+      cout << name << ": Hello synchronicity i= "<< i <<  endl;
 
-class Reader
-{
-public:
-  void start(){
-    init();
-    cout << "Value of varA: " << varA << endl;
-    varA = 324;
-    cout << "Other value of varA: " << varA << endl;
   }
 };
 
 int main()
-{
-  B b;
-
-  b.start();
+{  
+  thread th1{Printer{"Thread P1"}};
+  thread th2{Printer{"Thread P2"}};
+  
+  th1.join();
+  th2.join();
     
   return 0;
 }
